@@ -11,12 +11,10 @@ def hello_world(request):
 @csrf_exempt
 def product_list(request):
     if request.method == 'GET':
-        # Fetch all products
         products = list(Product.objects.values('id', 'name', 'price', 'available'))
         return JsonResponse(products, safe=False)
 
     elif request.method == 'POST':
-        # Ensure the request body is not empty
         if not request.body:
             return HttpResponseBadRequest("Request body is empty.")
 
@@ -35,7 +33,6 @@ def product_list(request):
         price = data.get('price')
         available = data.get('available')
 
-        # Validate price
         try:
             if price is not None:
                 price = Decimal(str(price))
@@ -44,11 +41,9 @@ def product_list(request):
         except (ValueError, TypeError):
             return HttpResponseBadRequest("Invalid value for price.")
 
-        # Validate available
         if not isinstance(available, bool):
             return HttpResponseBadRequest("Available field must be a boolean.")
 
-        # Ensure product name is unique
         if Product.objects.filter(name=name).exists():
             return HttpResponseBadRequest("Product with this name already exists.")
 
