@@ -40,6 +40,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git add docs.json index.html
           git commit -m "Updated documentation"
-          git push origin main
+          git push origin HEAD
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
