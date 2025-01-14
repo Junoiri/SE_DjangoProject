@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'DjangoApp',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
-
 
 TEMPLATES = [
     {
