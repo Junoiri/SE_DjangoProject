@@ -8,7 +8,41 @@ on:
       - jwt-auth
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd "pg_isready -U testuser"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Build and Start Containers
+        run: docker-compose up --build -d
+
+      - name: Execute Unit Tests
+        run: |
+          docker exec $(docker-compose ps -q api) python manage.py test DjangoApp.tests
+        # Adjust the path if necessary
+
   docs:
+    needs: test  # Ensures that tests pass before running docs
     runs-on: ubuntu-latest
 
     permissions:
@@ -45,4 +79,3 @@ jobs:
           )
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
