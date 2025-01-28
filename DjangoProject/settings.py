@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,13 +88,14 @@ WSGI_APPLICATION = 'DjangoProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_db',
-        'USER': 'junoiri',
-        'PASSWORD': 'Mike2003',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DATABASE_NAME', 'django_db'),  # Default value is 'django_db'
+        'USER': os.getenv('DATABASE_USER', 'junoiri'),  # Default is your current user
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'Mike2003'),  # Default is your current password
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),  # Default is 'localhost'
+        'PORT': os.getenv('DATABASE_PORT', '5432'),  # Default PostgreSQL port
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
