@@ -28,6 +28,14 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Create .env file
+        run: |
+          echo "DATABASE_NAME=testdb" >> .env
+          echo "DATABASE_USER=testuser" >> .env
+          echo "DATABASE_PASSWORD=testpassword" >> .env
+          echo "DATABASE_HOST=db" >> .env
+          echo "DATABASE_PORT=5432" >> .env
+
       - name: Set up Docker
         run: |
           sudo apt-get update
@@ -39,10 +47,9 @@ jobs:
       - name: Execute Unit Tests
         run: |
           docker exec $(docker-compose ps -q api) python manage.py test DjangoApp.tests
-        # Adjust the path if necessary
 
   docs:
-    needs: test  # Ensures that tests pass before running docs
+    needs: test
     runs-on: ubuntu-latest
 
     permissions:
