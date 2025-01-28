@@ -4,7 +4,6 @@ from .serializers import ProductSerializer, CustomerSerializer, OrderSerializer
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsAdminOrReadOnly
 from rest_framework.filters import SearchFilter
-import non_existent_module
 
 
 
